@@ -4,10 +4,14 @@ import { COMMODITIES, SAMPLE_PRICES } from "../config";
 import { S } from "../styles";
 import { fetchMarkets } from "../lib/functions";
 
-/* HONESTY RULE: prices are either clearly LIVE or clearly SAMPLE.
-   We never show sample numbers without saying so. */
+/* HONESTY RULES:
+   - Prices are clearly LIVE or clearly SAMPLE, never ambiguous.
+   - Free price feeds only cover a rotating subset of commodities each week;
+     anything we couldn't get is shown as "unavailable", not hidden and not
+     silently replaced with sample numbers. */
 export default function MarketsPage() {
   const [prices, setPrices] = useState(null);
+  const [missing, setMissing] = useState([]);
   const [live, setLive] = useState(false);
   const [reason, setReason] = useState(null);
   const [updated, setUpdated] = useState(null);
@@ -16,12 +20,14 @@ export default function MarketsPage() {
   const load = useCallback(async () => {
     setLoading(true);
     const res = await fetchMarkets();
-    if (res?.available && res.prices) {
+    if (res?.available && res.prices && Object.keys(res.prices).length > 0) {
       setPrices(res.prices);
+      setMissing(res.missing || []);
       setLive(true);
       setReason(null);
     } else {
       setPrices(SAMPLE_PRICES);
+      setMissing([]);
       setLive(false);
       setReason(res?.reason || "Live feed unavailable.");
     }
@@ -32,6 +38,7 @@ export default function MarketsPage() {
   useEffect(() => { load(); }, [load]);
 
   const groups = [...new Set(COMMODITIES.map((c) => c.group))];
+  const missingNames = new Set(missing.map((m) => m.name));
 
   return (
     <>
@@ -48,6 +55,12 @@ export default function MarketsPage() {
           <AlertTriangle size={13} /> Sample prices — not real quotes. {reason}
         </div>
       )}
+      {live && !loading && missing.length > 0 && (
+        <div style={S.banner}>
+          <AlertTriangle size={13} /> {missing.length} of {COMMODITIES.length} prices unavailable —
+          free price feeds rotate which commodities you can access each week. Shown prices are real.
+        </div>
+      )}
       {loading && <div style={S.empty}>Loading prices…</div>}
 
       {!loading && groups.map((g) => (
@@ -55,7 +68,24 @@ export default function MarketsPage() {
           <div style={S.groupHead}>{g}</div>
           {COMMODITIES.filter((c) => c.group === g).map((c) => {
             const p = prices?.[c.name];
-            if (!p) return null;
+
+            if (!p) {
+              const isMissing = live && missingNames.has(c.name);
+              return (
+                <div key={c.name} style={{ ...S.priceRow, opacity: 0.55 }}>
+                  <div>
+                    <div style={S.priceLabel}>{c.label}</div>
+                    <div style={S.priceUnit}>{c.unit}</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ ...S.priceUnit, fontSize: 12.5 }}>
+                      {isMissing ? "Not in this week's free rotation" : "Unavailable"}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             const chg = p.price - p.prev;
             const pct = p.prev ? (chg / p.prev) * 100 : 0;
             const up = chg > 0.0001, down = chg < -0.0001;

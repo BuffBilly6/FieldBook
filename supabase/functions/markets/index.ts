@@ -1,6 +1,10 @@
 /* Markets proxy — keeps the api-ninjas key server-side.
-   Returns { available: true, prices } or { available: false, reason }.
-   The app shows clearly-labeled sample prices when unavailable. */
+   Uses the batch `names` endpoint: free-tier keys only have access to a
+   rotating weekly subset of commodities, and the batch call returns
+   per-commodity results so one unavailable commodity never sinks the rest.
+   Returns { available, prices, missing, reason? }:
+     prices:  { corn: { price, prev, updated }, ... }  (only what succeeded)
+     missing: [{ name, reason }]                        (honestly reported)   */
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const COMMODITIES = ["corn", "soybean", "wheat", "live_cattle", "feeder_cattle", "lean_hogs"];
@@ -21,27 +25,45 @@ Deno.serve(async (req: Request) => {
 
   const key = Deno.env.get("API_NINJAS_KEY");
   if (!key) {
-    return json({ available: false, reason: "Markets API key not configured yet." });
+    return json({ available: false, prices: {}, missing: [], reason: "Markets API key not configured yet." });
   }
 
   try {
-    const out: Record<string, unknown> = {};
-    for (const name of COMMODITIES) {
-      const res = await fetch(
-        `https://api.api-ninjas.com/v1/commodityprice?name=${encodeURIComponent(name)}`,
-        { headers: { "X-Api-Key": key } },
-      );
-      if (!res.ok) throw new Error(`${name}: HTTP ${res.status}`);
-      const j = await res.json();
-      out[name] = {
-        price: j.price,
-        prev: j.previous_close ?? j.price,
-        exchange: j.exchange ?? null,
-        updated: j.updated ?? null,
-      };
-    }
-    return json({ available: true, prices: out });
+    const res = await fetch(
+      `https://api.api-ninjas.com/v1/commodityprice?names=${COMMODITIES.join(",")}`,
+      { headers: { "X-Api-Key": key } },
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = await res.json();
+    if (!Array.isArray(rows)) throw new Error("unexpected response shape");
+
+    const prices: Record<string, unknown> = {};
+    const missing: { name: string; reason: string }[] = [];
+
+    rows.forEach((row, i) => {
+      const slug = COMMODITIES[i];
+      if (!slug) return;
+      if (row && typeof row.price === "number") {
+        prices[slug] = {
+          price: row.price,
+          prev: row.previous_close ?? row.price,
+          updated: row.updated ?? null,
+        };
+      } else {
+        missing.push({ name: slug, reason: String(row?.error ?? "no data returned") });
+      }
+    });
+
+    const any = Object.keys(prices).length > 0;
+    return json({
+      available: any,
+      prices,
+      missing,
+      reason: any
+        ? null
+        : "No prices available — free api-ninjas plans rotate which commodities are accessible each week.",
+    });
   } catch (e) {
-    return json({ available: false, reason: `Price feed error: ${String(e)}` });
+    return json({ available: false, prices: {}, missing: [], reason: `Price feed error: ${String(e)}` });
   }
 });
