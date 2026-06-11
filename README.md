@@ -1,6 +1,6 @@
 # Fieldbook
 
-Mobile-first farm operations app: Vehicles · Fencing · Fields (satellite map) · Livestock · Projects · Markets.
+Mobile-first farm operations app: Vehicles · Fencing · Fields (satellite map) · Livestock · Projects · Markets, plus an Ag News page (header menu) with supply-chain / trade headlines.
 
 Backed by Supabase (Postgres + auth + edge functions). All data persists and syncs across devices.
 
@@ -37,7 +37,7 @@ No redeploy needed — functions read secrets at request time.
 - `src/hooks/useTable.js` — generic load/insert/update/delete for any table; row-level security scopes everything to the signed-in user.
 - `src/lib/hay.js` — the readiness suggestion engine. It only ever *suggests*; state changes require a tap.
 - `src/lib/geo.js` — polygon area math. Acreage is always labeled an estimate.
-- `supabase/functions/` — source for the deployed edge functions (markets, weather).
+- `supabase/functions/` — source for the deployed edge functions (markets, weather, agnews). The news function uses public Google News RSS feeds — no API key needed.
 
 ## Honesty principle
 

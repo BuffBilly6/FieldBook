@@ -14,6 +14,18 @@ export async function fetchMarkets() {
   }
 }
 
+export async function fetchAgNews(topic) {
+  try {
+    const { data, error } = await supabase.functions.invoke("agnews", {
+      body: { topic },
+    });
+    if (error) throw error;
+    return data;
+  } catch (e) {
+    return { available: false, reason: "Could not reach the news service." };
+  }
+}
+
 export async function fetchWeather(lat, lon) {
   try {
     const { data, error } = await supabase.functions.invoke("weather", {

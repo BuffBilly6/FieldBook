@@ -96,7 +96,8 @@ export const S = {
 
   fab: { position: "absolute", bottom: 84, right: 18, width: 56, height: 56, borderRadius: 18, background: GREEN, color: PAPER, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 8px 20px rgba(77,124,15,.45)", zIndex: 50 },
 
-  sheetBg: { position: "absolute", inset: 0, background: "rgba(28,25,23,.45)", display: "flex", alignItems: "flex-end", zIndex: 100 },
+  /* zIndex 2000 keeps sheets above Leaflet's map controls (which use up to 1000) */
+  sheetBg: { position: "absolute", inset: 0, background: "rgba(28,25,23,.45)", display: "flex", alignItems: "flex-end", zIndex: 2000 },
   sheet: { background: PAPER, width: "100%", borderRadius: "24px 24px 0 0", padding: "10px 18px max(18px, env(safe-area-inset-bottom))", maxHeight: "82%", display: "flex", flexDirection: "column" },
   sheetGrab: { width: 38, height: 4, borderRadius: 2, background: "#d8cfbf", margin: "0 auto 12px" },
   sheetHead: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 },
@@ -110,7 +111,9 @@ export const S = {
 
   banner: { display: "flex", alignItems: "center", gap: 7, background: "#fdf6e3", color: "#8a6d1f", fontSize: 12, padding: "9px 12px", borderRadius: 10, marginBottom: 14, border: "1px solid #f0e4c0", lineHeight: 1.4 },
 
-  mapCard: { position: "relative", height: 340, borderRadius: 18, overflow: "hidden", marginBottom: 16, border: `1px solid ${LINE}`, boxShadow: "0 2px 8px rgba(60,50,30,.1)" },
+  /* zIndex: 0 creates a stacking context so Leaflet's internal layers can't
+     escape the map card and cover sheets or buttons elsewhere on the page */
+  mapCard: { position: "relative", zIndex: 0, height: 340, borderRadius: 18, overflow: "hidden", marginBottom: 16, border: `1px solid ${LINE}`, boxShadow: "0 2px 8px rgba(60,50,30,.1)" },
   map: { position: "absolute", inset: 0 },
   mapLoading: { position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#9a8c78", zIndex: 500 },
   mapDrawBtn: { position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)", zIndex: 600, display: "flex", alignItems: "center", gap: 6, background: "#1c1917", color: PAPER, padding: "11px 20px", borderRadius: 30, fontSize: 14, fontWeight: 700, boxShadow: "0 4px 14px rgba(0,0,0,.35)" },
@@ -135,6 +138,19 @@ export const S = {
   priceChg: { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 3, fontSize: 12.5, fontWeight: 700, marginTop: 2, fontVariantNumeric: "tabular-nums" },
   refreshBtn: { display: "flex", alignItems: "center", justifyContent: "center", gap: 7, width: "100%", background: "#1c1917", color: PAPER, padding: "13px", borderRadius: 13, fontSize: 14, fontWeight: 700, marginTop: 4 },
   disclaimer: { fontSize: 11, color: "#b5aa98", lineHeight: 1.5, marginTop: 12, fontStyle: "italic" },
+
+  /* header dropdown menu */
+  menuWrap: { position: "relative" },
+  menuPanel: { position: "absolute", top: "calc(100% + 8px)", right: 0, background: "#fff", borderRadius: 14, border: `1px solid ${LINE}`, boxShadow: "0 10px 30px rgba(28,25,23,.25)", padding: 6, zIndex: 3000, minWidth: 170 },
+  menuItem: { display: "flex", alignItems: "center", gap: 9, width: "100%", padding: "11px 12px", borderRadius: 10, fontSize: 14, fontWeight: 600, color: INK, textAlign: "left" },
+
+  /* ag news */
+  chipRow: { display: "flex", gap: 7, overflowX: "auto", paddingBottom: 4, marginBottom: 14 },
+  topicChip: { flexShrink: 0, fontSize: 12, fontWeight: 700, padding: "7px 13px", borderRadius: 20, border: `1.5px solid ${LINE}`, background: "#fff", color: "#6b6253", whiteSpace: "nowrap" },
+  topicChipOn: { background: "#1c1917", color: PAPER, borderColor: "#1c1917" },
+  newsCard: { display: "block", background: "#fff", borderRadius: 14, padding: "13px 15px", marginBottom: 8, border: `1px solid ${LINE}`, boxShadow: "0 1px 3px rgba(60,50,30,.06)", textDecoration: "none" },
+  newsMeta: { display: "flex", gap: 8, fontSize: 11, color: "#9a8c78", marginBottom: 4, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.4 },
+  newsTitle: { fontFamily: "'Fraunces', serif", fontSize: 15.5, fontWeight: 600, color: INK, lineHeight: 1.35, margin: 0 },
 
   /* auth screen */
   authStage: { height: "100dvh", background: "radial-gradient(circle at 30% 10%, #3a4a32, #232a1f 70%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: "'Archivo', sans-serif" },

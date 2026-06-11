@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tractor, AlertTriangle, LogOut } from "lucide-react";
+import { Tractor, AlertTriangle, LogOut, Menu, Newspaper } from "lucide-react";
 import { supabase } from "./lib/supabase";
 import { TABS } from "./config";
 import { S, css } from "./styles";
@@ -9,6 +9,7 @@ import BottomNav from "./components/BottomNav";
 import ListPage from "./components/ListPage";
 import FieldsPage from "./components/FieldsPage";
 import MarketsPage from "./components/MarketsPage";
+import NewsPage from "./components/NewsPage";
 
 export default function App() {
   const [session, setSession] = useState(undefined); // undefined = still checking
@@ -37,6 +38,7 @@ export default function App() {
 
 function MainApp() {
   const [active, setActive] = useState("vehicles");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const vehicles = useTable("vehicles");
   const fencing = useTable("fencing");
@@ -46,6 +48,7 @@ function MainApp() {
 
   const listTables = { vehicles, fencing, livestock, projects };
   const tab = TABS.find((t) => t.id === active);
+  const pageLabel = active === "news" ? "Ag News" : tab?.label;
   const saveErr = [vehicles, fencing, livestock, projects, fields].find((t) => t.error)?.error;
 
   const openCount = (id) =>
@@ -59,7 +62,7 @@ function MainApp() {
             <div style={S.logo}><Tractor size={18} strokeWidth={2.4} /></div>
             <div>
               <div style={S.brand}>FIELDBOOK</div>
-              <div style={S.brandSub}>{tab.label}</div>
+              <div style={S.brandSub}>{pageLabel}</div>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -68,14 +71,28 @@ function MainApp() {
                 <AlertTriangle size={12} /> save failed
               </span>
             )}
-            <button style={S.headBtn} title="Sign out" onClick={() => supabase.auth.signOut()}>
-              <LogOut size={17} />
-            </button>
+            <div style={S.menuWrap}>
+              <button style={S.headBtn} title="Menu" onClick={() => setMenuOpen((o) => !o)}>
+                <Menu size={18} />
+              </button>
+              {menuOpen && (
+                <div style={S.menuPanel}>
+                  <button style={S.menuItem} onClick={() => { setActive("news"); setMenuOpen(false); }}>
+                    <Newspaper size={16} color="#4d7c0f" /> Ag News
+                  </button>
+                  <button style={S.menuItem} onClick={() => supabase.auth.signOut()}>
+                    <LogOut size={16} color="#9a8c78" /> Sign out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 
-        <div style={S.scroll} key={active} className="fb-fade">
-          {active === "markets" ? (
+        <div style={S.scroll} key={active} className="fb-fade" onClick={() => menuOpen && setMenuOpen(false)}>
+          {active === "news" ? (
+            <NewsPage />
+          ) : active === "markets" ? (
             <MarketsPage />
           ) : active === "fields" ? (
             <FieldsPage fields={fields} />
