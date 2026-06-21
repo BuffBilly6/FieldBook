@@ -9,6 +9,16 @@ import Sheet from "./Sheet";
 
 const byCreated = (a, b) => new Date(a.created_at) - new Date(b.created_at);
 
+/* Order phases naturally: "Phase 7b" -> 7.5, unphased -> last. */
+const phaseNum = (p) => {
+  const m = (p || "").match(/Phase\s+(\d+)([a-z]?)/i);
+  return m ? parseInt(m[1], 10) + (m[2] ? 0.5 : 0) : 999;
+};
+const shortPhase = (p) => {
+  const m = (p || "").match(/^Phase\s+(\S+)/i);
+  return m ? "Phase " + m[1] : (p || "Other");
+};
+
 const DETAIL_TABS = [
   { id: "todo", label: "To-Do", icon: ListChecks },
   { id: "done", label: "Done", icon: Check },
@@ -21,6 +31,7 @@ const DETAIL_TABS = [
    Reusable for any project — 3D and blueprint come from PROJECT_ASSETS by name. */
 export default function ProjectDetail({ name, table, onBack }) {
   const [tab, setTab] = useState("todo");
+  const [phaseSel, setPhaseSel] = useState(null);
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState({});
   const { update, insert, remove } = table;
@@ -33,6 +44,17 @@ export default function ProjectDetail({ name, table, onBack }) {
   const todo = tasks.filter((r) => r.status !== "done");
   const done = tasks.filter((r) => r.status === "done");
   const assets = PROJECT_ASSETS[name] || {};
+
+  /* Group To-Do by phase so each phase is its own sub-tab. */
+  const phaseList = [...new Set(tasks.map((t) => t.phase || "Other"))].sort((a, b) => phaseNum(a) - phaseNum(b));
+  const phaseData = phaseList.map((p) => {
+    const list = tasks.filter((t) => (t.phase || "Other") === p).sort(byCreated);
+    const open = list.filter((t) => t.status !== "done").length;
+    return { p, list, open, done: list.length > 0 && open === 0 };
+  });
+  const firstOpen = phaseData.find((d) => !d.done);
+  const curPhase = phaseSel && phaseList.includes(phaseSel) ? phaseSel : firstOpen ? firstOpen.p : phaseList[0];
+  const curData = phaseData.find((d) => d.p === curPhase);
 
   const toggleDone = (row) =>
     update(row.id, { status: row.status === "done" ? "todo" : "done" });
@@ -140,10 +162,35 @@ export default function ProjectDetail({ name, table, onBack }) {
       </div>
 
       {tab === "todo" && (
-        <div style={S.cardList}>
-          {todo.length === 0 && <div style={S.empty}><p style={{ margin: 0 }}>Nothing to do — tap + to add a step.</p></div>}
-          {todo.map((row) => renderRow(row, true))}
-        </div>
+        <>
+          {phaseList.length === 0 && <div style={S.empty}><p style={{ margin: 0 }}>Nothing to do — tap + to add a step.</p></div>}
+          {phaseList.length > 0 && (
+            <>
+              <div style={S.tabBar}>
+                {phaseData.map((d) => {
+                  const on = d.p === curPhase;
+                  return (
+                    <button key={d.p} onClick={() => setPhaseSel(d.p)}
+                      style={{ ...S.tab, ...(on ? S.tabOn : {}), ...(d.done && !on ? { opacity: 0.6 } : {}) }}>
+                      {d.done && <Check size={13} />} {shortPhase(d.p)}
+                    </button>
+                  );
+                })}
+              </div>
+              {curData && (
+                <>
+                  <div style={S.phaseHead}>
+                    <span style={S.phaseName}>{curPhase === "Other" ? "Unphased" : curPhase}</span>
+                    <span style={S.phaseCount}>{curData.done ? "Phase complete" : `${curData.open} left`}</span>
+                  </div>
+                  <div style={S.cardList}>
+                    {curData.list.map((row) => renderRow(row, true))}
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </>
       )}
 
       {tab === "done" && (

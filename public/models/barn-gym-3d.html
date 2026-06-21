@@ -8,7 +8,7 @@
   html,body{margin:0;height:100%;background:#0f1216;font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#e8e6df;overflow:hidden;}
   #app{position:fixed;inset:0;}
   canvas{display:block;}
-  .panel{position:fixed;top:14px;left:14px;background:rgba(18,22,28,.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 15px;max-width:264px;}
+  .panel{position:fixed;top:14px;left:14px;background:rgba(18,22,28,.82);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 15px;max-width:268px;}
   .panel h1{font-size:15px;margin:0 0 3px;font-weight:600;}
   .panel p{font-size:12px;color:#a7a9ad;margin:0 0 11px;line-height:1.5;}
   .btns{display:flex;flex-wrap:wrap;gap:6px;}
@@ -25,11 +25,12 @@
 <div id="app"></div>
 <div class="panel">
   <h1>Barn gym + loft studio</h1>
-  <p>Two-story build: open gym below, a loft studio (kitchenette, queen bed, en-suite bath) at the 9 ft level, ~19 ft ridge. Hide the roof or upper walls to look inside.</p>
+  <p>Drive-through gym below (garage door each end), loft studio above with half-bath &amp; kitchenette. Click <b>Framing</b> to X-ray the structure; hide the roof/walls to look inside.</p>
   <div class="btns">
     <button id="bRotate" class="on">Auto-rotate</button>
     <button id="bRoof" class="on">Roof</button>
     <button id="bWalls" class="on">Upper walls</button>
+    <button id="bFrame">Framing</button>
     <button id="bInside" class="on">Interior</button>
     <button id="bLabel" class="on">Labels</button>
     <button id="bReset">Reset</button>
@@ -37,9 +38,9 @@
 </div>
 <div class="legend">
   <div><span style="background:#b4593c"></span>Containers</div>
-  <div><span style="background:#c8a86a"></span>Loft floor / framing</div>
-  <div><span style="background:#3a86b5"></span>Cold plunge</div>
-  <div><span style="background:#b07c43"></span>Cedar sauna</div>
+  <div><span style="background:#3a3d42"></span>Garage doors</div>
+  <div><span style="background:#c8a86a"></span>Loft / framing</div>
+  <div><span style="background:#3a86b5"></span>Cold plunge · <span style="background:#b07c43"></span>Sauna</div>
 </div>
 <div class="hint">Drag to orbit · scroll to zoom · right-drag to pan</div>
 
@@ -47,54 +48,61 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 const C_LEN=20,C_W=8,C_H=8.5,GAP=16,halfW=16,slabH=0.5,y0=slabH;
-const TOP=y0+C_H;
-const LOFT=TOP;
-const LWALL=LOFT+8;
-const RIDGE=LWALL+2;
+const TOP=y0+C_H, LOFT=TOP, LWALL=LOFT+8, RIDGE=LWALL+2;
 
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x0f1216);
-scene.fog=new THREE.FogExp2(0x0f1216,0.0055);
-
+scene.fog=new THREE.FogExp2(0x0f1216,0.0052);
 const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.1,2000);
-const startCam=new THREE.Vector3(36,24,42);
-camera.position.copy(startCam);
-
+const startCam=new THREE.Vector3(38,25,44); camera.position.copy(startCam);
 const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setSize(innerWidth,innerHeight);
 renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.outputEncoding=THREE.sRGBEncoding;
-renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.04;
+renderer.outputEncoding=THREE.sRGBEncoding; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.04;
 document.getElementById('app').appendChild(renderer.domElement);
-
 const controls=new THREE.OrbitControls(camera,renderer.domElement);
 controls.enableDamping=true; controls.dampingFactor=0.07; controls.target.set(0,7,0);
-controls.maxPolarAngle=Math.PI/2.04; controls.minDistance=16; controls.maxDistance=110;
-controls.autoRotate=true; controls.autoRotateSpeed=0.55;
+controls.maxPolarAngle=Math.PI/2.04; controls.minDistance=16; controls.maxDistance=120; controls.autoRotate=true; controls.autoRotateSpeed=0.55;
 
 scene.add(new THREE.HemisphereLight(0xbfd6ec,0x4a4636,0.7));
-const sun=new THREE.DirectionalLight(0xfff2d6,1.15);
-sun.position.set(34,52,22); sun.castShadow=true;
-sun.shadow.mapSize.set(2048,2048);
-sun.shadow.camera.left=-50;sun.shadow.camera.right=50;sun.shadow.camera.top=50;sun.shadow.camera.bottom=-50;
-sun.shadow.camera.near=1;sun.shadow.camera.far=160;sun.shadow.bias=-0.0004;
-scene.add(sun);
-const fill=new THREE.DirectionalLight(0x9fb6cc,0.25); fill.position.set(-26,18,-22); scene.add(fill);
+const sun=new THREE.DirectionalLight(0xfff2d6,1.15); sun.position.set(36,54,24); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048); sun.shadow.camera.left=-54;sun.shadow.camera.right=54;sun.shadow.camera.top=54;sun.shadow.camera.bottom=-54;
+sun.shadow.camera.near=1;sun.shadow.camera.far=170;sun.shadow.bias=-0.0004; scene.add(sun);
+const fill=new THREE.DirectionalLight(0x9fb6cc,0.25); fill.position.set(-28,18,-24); scene.add(fill);
 
-function std(color,o){return new THREE.MeshStandardMaterial(Object.assign({color,roughness:0.8,metalness:0.05},o||{}));}
+function std(c,o){return new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:0.8,metalness:0.05},o||{}));}
 function box(w,h,d,mat,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;return m;}
 function corr(hex){const c=document.createElement('canvas');c.width=128;c.height=8;const x=c.getContext('2d');
   for(let i=0;i<128;i++){const t=Math.sin(i/128*Math.PI*32);const col=new THREE.Color(hex).multiplyScalar(0.78+0.22*t);x.fillStyle='#'+col.getHexString();x.fillRect(i,0,1,8);}
   const tex=new THREE.CanvasTexture(c);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.encoding=THREE.sRGBEncoding;return tex;}
 const corrTex=corr(0xb4593c);
+const glass=new THREE.MeshStandardMaterial({color:0xbfe0ef,transparent:true,opacity:0.26,roughness:0.1,side:THREE.DoubleSide});
+const frameMat=std(0x2a2a2a,{metalness:0.3,roughness:0.5});
+const gdoorMat=std(0x3a3d42,{metalness:0.45,roughness:0.5});
 
-scene.add((()=>{const g=new THREE.Mesh(new THREE.PlaneGeometry(400,400),std(0x6f7d53,{roughness:1}));g.rotation.x=-Math.PI/2;g.position.y=-0.02;g.receiveShadow=true;return g;})());
+// clad walls register their materials so Framing can X-ray them
+const cladMats=[];
+function clad(w,h,d,color,x,y,z){const mat=std(color,{roughness:0.9});cladMats.push(mat);return box(w,h,d,mat,x,y,z);}
+
+function win(w,h,x,y,z,axis){const g=new THREE.Group();
+  if(axis==='x'){g.add(box(0.07,h,w,glass,x,y,z));g.add(box(0.05,h+0.3,w+0.3,frameMat,x,y,z));}
+  else{g.add(box(w,h,0.07,glass,x,y,z));g.add(box(w+0.3,h+0.3,0.05,frameMat,x,y,z));}
+  return g;}
+
+// ground, slab, gravel, driveway aprons, septic
+scene.add((()=>{const g=new THREE.Mesh(new THREE.PlaneGeometry(440,440),std(0x6f7d53,{roughness:1}));g.rotation.x=-Math.PI/2;g.position.y=-0.02;g.receiveShadow=true;return g;})());
 scene.add((()=>{const p=new THREE.Mesh(new THREE.PlaneGeometry(halfW*2+8,C_LEN+8),std(0x8d8a7f,{roughness:1}));p.rotation.x=-Math.PI/2;p.receiveShadow=true;return p;})());
+[-1,1].forEach(s=>{const a=new THREE.Mesh(new THREE.PlaneGeometry(11,9),std(0x9a978d,{roughness:1}));a.rotation.x=-Math.PI/2;a.position.set(0,0.01,s*(C_LEN/2+4.5));a.receiveShadow=true;scene.add(a);}); // driveway aprons
 scene.add(box(halfW*2+1,slabH,C_LEN+1,std(0xc2c1ba,{roughness:0.9}),0,slabH/2,0));
 scene.add((()=>{const r=new THREE.Mesh(new THREE.PlaneGeometry(GAP+C_W,C_LEN-0.5),std(0x2b2d31,{roughness:0.95}));r.rotation.x=-Math.PI/2;r.position.set(-C_W/2,slabH+0.02,0);r.receiveShadow=true;return r;})());
+// SEPTIC: tank + drain field off to the left
+scene.add(box(5,2,3,std(0x6b6b66,{roughness:0.9}),-23,0.4,-2));            // tank (mostly buried)
+for(let i=0;i<4;i++) scene.add(box(9,0.15,0.7,std(0x7c7a6e,{roughness:1}),-26,0.06,2+i*1.4)); // drain-field laterals
+scene.add(box(0.5,0.2,8,std(0x55534b,{roughness:1}),-19,0.06,-3));          // sewer line to tank
 
 const shell=new THREE.Group();scene.add(shell);
+
+// CONTAINERS (wings) with windows + a man-door
 function container(cx,innerSign,innerMode){
   const g=new THREE.Group(),t=0.16;
   const wall=new THREE.MeshStandardMaterial({map:corrTex.clone(),roughness:0.55,metalness:0.35,color:0xffffff});wall.map.repeat.set(C_LEN/2,1);
@@ -104,6 +112,13 @@ function container(cx,innerSign,innerMode){
   g.add(box(C_W,C_H,t,end,cx,y0+C_H/2,-C_LEN/2));g.add(box(C_W,C_H,t,end.clone(),cx,y0+C_H/2,C_LEN/2));
   const post=std(0x7a3f2b,{roughness:0.6,metalness:0.3});
   [[-C_W/2,-C_LEN/2],[-C_W/2,C_LEN/2],[C_W/2,-C_LEN/2],[C_W/2,C_LEN/2]].forEach(p=>g.add(box(0.3,C_H,0.3,post,cx+p[0],y0+C_H/2,p[1])));
+  // windows on the outer wall
+  const ox=cx-innerSign*C_W/2;
+  g.add(win(3,2.6,ox-innerSign*0.05,y0+5,-5,'x'));
+  g.add(win(3,2.6,ox-innerSign*0.05,y0+5,5,'x'));
+  // exterior man-door on the front end of each wing
+  g.add(box(C_W*0.0+0.1,6.6,3,frameMat,cx,y0+3.3,C_LEN/2-0.02));
+  g.add(box(2.6,6.2,0.12,std(0x4a4f55,{roughness:0.6}),cx,y0+3.1,C_LEN/2-0.06));
   const ix=cx+innerSign*C_W/2;
   if(innerMode==='open'){
     g.add(box(t,1,C_LEN,std(0x5e2519),ix,TOP-0.5,0));
@@ -111,33 +126,51 @@ function container(cx,innerSign,innerMode){
     g.add(box(t,C_H,0.6,std(0x5e2519),ix,y0+C_H/2,C_LEN/2-0.3));
   }else{
     const wm=std(0xb4593c,{roughness:0.6});
-    g.add(box(t,C_H,7,wm,ix,y0+C_H/2,-6.5));g.add(box(t,C_H,2,wm,ix,y0+C_H/2,1));g.add(box(t,C_H-7,7,wm,ix,TOP-(C_H-7)/2,6.5));
+    g.add(box(t,C_H,5.6,wm,ix,y0+C_H/2,-7.2));      // back (utility)
+    g.add(box(t,C_H,2,wm,ix,y0+C_H/2,1));           // mid
+    g.add(box(t,C_H-7,4.6,wm,ix,TOP-(C_H-7)/2,6.7));// header over plunge access
+    // doors in the right inner wall: utility man-door + glass sauna door
+    g.add(box(0.12,6.4,2.6,std(0x4a4f55,{roughness:0.6}),ix,y0+3.2,-8.5));   // utility door
+    g.add(box(0.1,5.4,3,glass,ix,y0+2.7,-1));                                // sauna glass door
   }
   return g;
 }
 shell.add(container(-(GAP/2+C_W/2),+1,'open'));
 shell.add(container(+(GAP/2+C_W/2),-1,'door'));
 
+// LOFT FLOOR (front 4ft open as overlook) + railing
 const loftWood=std(0xc8a86a,{roughness:0.75});
-shell.add(box(GAP+0.3,0.5,C_LEN-4, loftWood, 0, LOFT+0.25, -2));
-const beamMat=std(0x6b6256,{roughness:0.7});
-for(let z=-9;z<=5;z+=2) shell.add(box(GAP+0.3,0.5,0.3,beamMat,0,LOFT-0.3,z));
-shell.add(box(GAP+0.6,0.6,0.6,std(0x4a4a4a,{metalness:0.5,roughness:0.5}),0,LOFT-0.4,6));
+shell.add(box(GAP+0.3,0.5,C_LEN-4,loftWood,0,LOFT+0.25,-2));
 const rail=std(0x2c2c2c,{metalness:0.4,roughness:0.5});
 shell.add(box(GAP,0.12,0.12,rail,0,LOFT+3,6));
 for(let x=-7.5;x<=7.5;x+=1.5) shell.add(box(0.1,3,0.1,rail,x,LOFT+1.5,6));
 
-const upper=new THREE.Group();scene.add(upper);
-const lwall=std(0xe9e6df,{roughness:0.9});
-upper.add(box(0.18,LWALL-LOFT,C_LEN,lwall,-GAP/2,(LOFT+LWALL)/2,0));
-upper.add(box(0.18,LWALL-LOFT,C_LEN,lwall, GAP/2,(LOFT+LWALL)/2,0));
-upper.add(box(GAP,LWALL-LOFT,0.18,lwall,0,(LOFT+LWALL)/2,-C_LEN/2));
-upper.add(box(GAP,LWALL-LOFT,0.18,lwall,0,(LOFT+LWALL)/2, C_LEN/2));
-const glass=new THREE.MeshStandardMaterial({color:0xbfe0ef,transparent:true,opacity:0.25,roughness:0.1,metalness:0,side:THREE.DoubleSide});
-upper.add(box(0.06,3.4,5,glass,-GAP/2-0.05,LOFT+4,-3));
-upper.add(box(0.06,3.4,5,glass, GAP/2+0.05,LOFT+4,3));
-upper.add(box(5,3.4,0.06,glass,-2,LOFT+4,C_LEN/2+0.04));
+// CENTER GABLE-END WALLS with GARAGE DOORS + gable windows
+function centerEnd(zsign){
+  const z=zsign*C_LEN/2, zin=zsign*(C_LEN/2-0.1);
+  shell.add(clad(3,LWALL-y0,0.18,0xe9e6df,-6.5,y0+(LWALL-y0)/2,z));   // left jamb wall
+  shell.add(clad(3,LWALL-y0,0.18,0xe9e6df, 6.5,y0+(LWALL-y0)/2,z));   // right jamb wall
+  shell.add(clad(13,LWALL-9,0.18,0xe9e6df,0,(9+LWALL)/2,z));          // header above door 9..17
+  // garage door (x -5..5, y0..8)
+  for(let i=0;i<5;i++) shell.add(box(9.6,1.55,0.12,gdoorMat,0,y0+0.8+i*1.6,zin));
+  shell.add(box(10.2,0.18,0.16,frameMat,0,y0+8.1,z));
+  // gable triangle + window
+  const a=new Float32Array([-GAP/2,LWALL,z,GAP/2,LWALL,z,0,RIDGE,z]);
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(a,3));geo.computeVertexNormals();
+  shell.add(new THREE.Mesh(geo,std(0xc9b79a,{roughness:0.9})));
+  shell.add(win(3.2,2,0,LWALL+0.7,zin,'z'));                          // gable window
+  shell.add(win(6,2.4,0,12.5,zin,'z'));                               // big clerestory window over door
+}
+centerEnd(1);centerEnd(-1);
 
+// UPPER LOFT SIDE WALLS (clad) + windows  [toggle to hide]
+const upper=new THREE.Group();scene.add(upper);
+upper.add(clad(0.18,LWALL-LOFT,C_LEN,0xe9e6df,-GAP/2,(LOFT+LWALL)/2,0));
+upper.add(clad(0.18,LWALL-LOFT,C_LEN,0xe9e6df, GAP/2,(LOFT+LWALL)/2,0));
+upper.add(win(5,3,-GAP/2-0.06,LOFT+4,-3,'x'));
+upper.add(win(5,3, GAP/2+0.06,LOFT+4,3,'x'));
+
+// ROOF (gable over center) + wing shed roofs  [toggle]
 const roof=new THREE.Group();scene.add(roof);
 const roofMat=new THREE.MeshStandardMaterial({color:0xb8c0c6,roughness:0.35,metalness:0.6,side:THREE.DoubleSide});
 const D=(C_LEN+1.4)/2,OH=1;
@@ -146,73 +179,87 @@ function roofPlane(sign){const ex=sign*(GAP/2+OH);
   const v=sign>0?[eF,eB,rB,rF]:[rF,rB,eB,eF];
   const a=new Float32Array([v[0].x,v[0].y,v[0].z,v[1].x,v[1].y,v[1].z,v[2].x,v[2].y,v[2].z,v[0].x,v[0].y,v[0].z,v[2].x,v[2].y,v[2].z,v[3].x,v[3].y,v[3].z]);
   const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(a,3));geo.computeVertexNormals();
-  const m=new THREE.Mesh(geo,roofMat);m.castShadow=true;return m;}
+  return new THREE.Mesh(geo,roofMat);}
 roof.add(roofPlane(-1));roof.add(roofPlane(1));
 roof.add(box(0.4,0.35,C_LEN+1.4,std(0x5b636a,{metalness:0.6,roughness:0.4}),0,RIDGE+0.15,0));
-[-1,1].forEach(s=>{const z=s*D;const a=new Float32Array([-GAP/2,LWALL,z,GAP/2,LWALL,z,0,RIDGE,z]);
-  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(a,3));geo.computeVertexNormals();
-  roof.add(new THREE.Mesh(geo,std(0xc9b79a,{roughness:0.9})));});
-[-1,1].forEach(s=>{const m=box(C_W+0.6,0.2,C_LEN+0.8,std(0x6f7880,{metalness:0.5,roughness:0.45}),s*(GAP/2+C_W/2),TOP+0.3,0);m.rotation.z=s*0.06;roof.add(m);});
+[-1,1].forEach(s=>{const m=box(C_W+0.8,0.2,C_LEN+0.8,std(0x6f7880,{metalness:0.5,roughness:0.45}),s*(GAP/2+C_W/2),TOP+0.35,0);m.rotation.z=s*0.07;roof.add(m);});
 
+// L-STAIRCASE in the back-left gym corner (clear of garage doors)
 const stair=new THREE.Group();shell.add(stair);
 const tread=std(0x9a9a92,{roughness:0.7});
-for(let i=0;i<8;i++) stair.add(box(1.1,0.25,1.1,tread,-6+i*1.0,y0+0.5+i*0.55,8.6));
-stair.add(box(1.6,0.25,1.6,tread,2.6,y0+0.5+8*0.55,8.0));
-for(let i=0;i<4;i++) stair.add(box(1.4,0.25,1.0,tread,2.6,y0+0.9+8*0.55+i*0.45,7.4-i*0.5));
+for(let i=0;i<9;i++) stair.add(box(1.5,0.25,1.0,tread,-7.0,y0+0.45+i*0.5,-9+i*0.7));   // flight 1 along left wall (z -9 -> -3)
+stair.add(box(1.7,0.25,1.7,tread,-7.0,y0+0.45+9*0.5,-2.6));                              // landing
+for(let i=0;i<7;i++) stair.add(box(1.0,0.25,1.4,tread,-6.2+i*0.8,y0+0.9+9*0.5+i*0.5,-2.6)); // flight 2 turn toward center, up to loft
+shell.add(box(0.1,3,7,rail,-7.8,LOFT+1.5,-5.5));                                          // loft-edge rail near stair
 
+// FRAMING (studs) — revealed by the Framing toggle
+const studs=new THREE.Group();studs.visible=false;scene.add(studs);
+const studMat=std(0xcaa86a,{roughness:0.85});
+function stud(x,z,h,yb){return box(0.14,h,0.14,studMat,x,(yb||y0)+h/2,z);}
+// loft side-wall studs
+for(let z=-9;z<=9;z+=1.33){studs.add(stud(-GAP/2,z,LWALL-LOFT,LOFT));studs.add(stud(GAP/2,z,LWALL-LOFT,LOFT));}
+// center end-wall studs (above + beside garage doors)
+[-1,1].forEach(s=>{const z=s*C_LEN/2;
+  for(let x=-7.5;x<=7.5;x+=1.33) studs.add(stud(x,z,LWALL-9,9));
+  studs.add(stud(-6.5,z,LWALL-y0,y0));studs.add(stud(6.5,z,LWALL-y0,y0));});
+// loft floor joists
+for(let z=-9.5;z<=5;z+=1.33) studs.add(box(GAP,0.4,0.18,std(0x9c8758,{roughness:0.8}),0,LOFT-0.35,z));
+studs.add(box(GAP+0.6,0.7,0.7,std(0x4a4a4a,{metalness:0.5,roughness:0.5}),0,LOFT-0.5,6)); // loft rim beam
+// right-wing partition studs
+[-4,2].forEach(z=>{for(let x=8.6;x<=15.6;x+=1.2) studs.add(stud(x,z,C_H));});
+
+// INTERIOR
 const interior=new THREE.Group();scene.add(interior);
-const steel=std(0x303338,{metalness:0.6,roughness:0.4});const iron=std(0x26272b,{metalness:0.5,roughness:0.5});const blackR=std(0x1f2024,{roughness:0.95});
+const steel=std(0x303338,{metalness:0.6,roughness:0.4}),iron=std(0x26272b,{metalness:0.5,roughness:0.5}),blackR=std(0x1f2024,{roughness:0.95});
 function cyl(r,h,mat,x,y,z,axis){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,18),mat);m.position.set(x,y,z);if(axis==='x')m.rotation.z=Math.PI/2;if(axis==='z')m.rotation.x=Math.PI/2;m.castShadow=true;return m;}
+// gym
 [[-2,-7.5],[2,-7.5],[-2,-3.5],[2,-3.5]].forEach(p=>interior.add(box(0.22,7.4,0.22,steel,p[0],y0+3.7,p[1])));
-interior.add(box(4.3,0.2,0.2,steel,0,y0+7.2,-7.5));interior.add(box(4.3,0.2,0.2,steel,0,y0+7.2,-3.5));
-interior.add(cyl(0.07,4.3,steel,0,y0+6.6,-3.5,'x'));
-interior.add(cyl(0.05,5.2,std(0x6b6e73,{metalness:0.7,roughness:0.3}),0,y0+4.2,-5.5,'x'));
-[-2.2,2.2].forEach(s=>interior.add(cyl(0.85,0.2,iron,s,y0+4.2,-5.5,'x')));
+interior.add(box(4.3,0.2,0.2,steel,0,y0+7.2,-7.5));interior.add(box(4.3,0.2,0.2,steel,0,y0+7.2,-3.5));interior.add(cyl(0.07,4.3,steel,0,y0+6.6,-3.5,'x'));
+interior.add(cyl(0.05,5.2,std(0x6b6e73,{metalness:0.7,roughness:0.3}),0,y0+4.2,-5.5,'x'));[-2.2,2.2].forEach(s=>interior.add(cyl(0.85,0.2,iron,s,y0+4.2,-5.5,'x')));
 interior.add(box(8,0.16,8,blackR,0,slabH+0.09,-1));
-interior.add(box(0.9,1.3,4.2,steel,0,y0+0.65,4));interior.add(box(1.1,0.25,4,blackR,0,y0+1.35,4));
-interior.add(box(1.5,2.4,5,steel,-15.4,y0+1.2,-5));
-for(let i=0;i<4;i++)for(let s of[-1,1]){interior.add(cyl(0.35,0.5,iron,-15.4+s*0.55,y0+1.6,-6.5+i*1.4,'x'));}
-interior.add(box(1.4,6.5,3.6,std(0x6f6f68,{roughness:0.9}),-15,y0+3.25,5));
+interior.add(box(0.9,1.3,4.2,steel,0,y0+0.65,3.5));interior.add(box(1.1,0.25,4,blackR,0,y0+1.35,3.5));
+interior.add(box(1.5,2.4,5,steel,-15.2,y0+1.2,4));   // left storage rack
+for(let i=0;i<4;i++)for(let s of[-1,1]) interior.add(cyl(0.35,0.5,iron,-15.2+s*0.55,y0+1.6,-7+i*1.3,'x'));
+// right wing: UTILITY (z-10..-4) water heater + panel + chiller; SAUNA (z-4..2); PLUNGE (z2..8)
+interior.add(cyl(0.7,3,std(0xd7d9dc,{metalness:0.4,roughness:0.5}),10.5,y0+1.6,-8.5,null)); // water heater tank
+interior.add(box(0.4,1.8,1.2,std(0x33363a,{metalness:0.5,roughness:0.5}),15.7,y0+4,-8.5));   // electrical sub-panel
+interior.add(box(1,1.2,1,std(0x2b2e33,{metalness:0.5,roughness:0.5}),14.5,y0+0.6,-5.4));      // plunge chiller
 const cedar=std(0xb07c43,{roughness:0.8});
-interior.add(box(7.8,0.16,6,cedar,12,TOP-0.4,0));
-interior.add(box(0.12,C_H-0.8,6,glass,8.15,y0+(C_H-0.8)/2,0));
-interior.add(box(7.6,0.5,1.3,cedar,12,y0+1.1,-1.7));interior.add(box(7.6,0.5,1.3,cedar,12,y0+2.3,0.2));
-interior.add(box(1,1.5,1,std(0x44464a,{metalness:0.5,roughness:0.5}),15,y0+0.75,2.2));
-interior.add(box(4.4,2.8,5.2,std(0x9a9a92,{roughness:0.6,metalness:0.2}),13,y0+1.4,6.4));
-interior.add(box(3.7,0.5,4.5,new THREE.MeshStandardMaterial({color:0x2f7fb0,transparent:true,opacity:0.85,roughness:0.15,metalness:0.1}),13,y0+2.4,6.4));
-interior.add(box(1,1.2,1,std(0x33363a,{metalness:0.5,roughness:0.5}),15.2,y0+0.6,9.2));
-interior.add(box(4,7,0.12,glass,0,slabH+3.5,C_LEN/2+0.06));
-
+interior.add(box(7.8,0.16,6,cedar,12,TOP-0.4,-1));interior.add(box(7.6,0.5,1.3,cedar,12,y0+1.1,-2.5));interior.add(box(7.6,0.5,1.3,cedar,12,y0+2.3,-0.6));
+interior.add(box(1,1.5,1,std(0x44464a,{metalness:0.5,roughness:0.5}),15,y0+0.75,0.5)); // sauna heater
+interior.add(box(4.4,2.8,5,std(0x9a9a92,{roughness:0.6,metalness:0.2}),13,y0+1.4,5.5));  // plunge shell
+interior.add(box(3.7,0.5,4.3,new THREE.MeshStandardMaterial({color:0x2f7fb0,transparent:true,opacity:0.85,roughness:0.15}),13,y0+2.4,5.5));
+// LOFT studio
 const loftF=LOFT+0.5;
-interior.add(box(5,0.6,6.6,std(0x6b4f3a,{roughness:0.8}),-4.5,loftF+0.3,-5.5));
-interior.add(box(4.6,0.5,6,std(0xeef1f4,{roughness:0.95}),-4.5,loftF+0.75,-5.3));
-interior.add(box(4.6,0.3,1.2,std(0xdfe5ea,{roughness:0.95}),-4.5,loftF+1.0,-8));
-interior.add(box(1.6,1.7,6,std(0x3a3f45,{roughness:0.7,metalness:0.2}),6.6,loftF+0.85,-6));
-interior.add(box(1.8,0.16,6.3,std(0xd9dde2,{roughness:0.5}),6.6,loftF+1.75,-6));
-interior.add(box(1.6,2.2,6,std(0x4a5158,{roughness:0.7}),6.7,loftF+5,-6));
-interior.add(box(0.7,0.7,0.7,std(0x222222,{metalness:0.6,roughness:0.3}),6.4,loftF+1.95,-7.5));
+interior.add(box(5,0.6,6.6,std(0x6b4f3a,{roughness:0.8}),-3.5,loftF+0.3,-5));interior.add(box(4.6,0.5,6,std(0xeef1f4,{roughness:0.95}),-3.5,loftF+0.75,-4.8));interior.add(box(4.6,0.3,1.2,std(0xdfe5ea,{roughness:0.95}),-3.5,loftF+1,-7.4));
+interior.add(box(1.6,1.7,7,std(0x3a3f45,{roughness:0.7,metalness:0.2}),6.6,loftF+0.85,-5.5));interior.add(box(1.8,0.16,7.3,std(0xd9dde2,{roughness:0.5}),6.6,loftF+1.75,-5.5));interior.add(box(1.6,2.2,7,std(0x4a5158,{roughness:0.7}),6.7,loftF+5,-5.5));
+interior.add(box(0.7,0.7,0.7,std(0x222222,{metalness:0.6,roughness:0.3}),6.3,loftF+1.95,-7.5));
+// loft HALF-BATH (toilet + sink only), enclosed with a door, front-right
 const bwall=std(0xe9e6df,{roughness:0.9});
-interior.add(box(0.12,3.6,4,bwall,3,loftF+1.8,4));
-interior.add(box(5,3.6,0.12,bwall,5.5,loftF+1.8,2));
-interior.add(box(1.3,1.4,1.3,std(0xf3f3ee,{roughness:0.4}),4,loftF+0.7,5));
-interior.add(box(2,1.0,0.9,std(0xf3f3ee,{roughness:0.4}),6.8,loftF+0.6,5));
-interior.add(box(0.06,3.2,2.4,glass,4.8,loftF+1.6,3));
-interior.add(box(4,1.2,1.6,std(0x4f5a52,{roughness:0.85}),-3,loftF+0.6,4.4));
+interior.add(box(0.12,3.6,3.4,bwall,3.2,loftF+1.8,4.2));interior.add(box(4.6,3.6,0.12,bwall,5.5,loftF+1.8,2.5));
+interior.add(box(1.3,1.4,1.3,std(0xf3f3ee,{roughness:0.4}),6.5,loftF+0.7,4.6));   // toilet
+interior.add(box(1.8,1,0.8,std(0xf3f3ee,{roughness:0.4}),5,loftF+0.6,5.2));        // sink vanity
+interior.add(box(0.1,3,1.4,std(0x4a4f55,{roughness:0.6}),3.2,loftF+1.5,5.4));      // bath door
+interior.add(box(4,1.2,1.6,std(0x4f5a52,{roughness:0.85}),-3,loftF+0.6,4.6));      // sofa
 
+// LABELS
 const labels=new THREE.Group();scene.add(labels);
 function label(text,x,y,z,w){const c=document.createElement('canvas');c.width=256;c.height=64;const g=c.getContext('2d');
   g.fillStyle='rgba(18,22,28,.86)';g.strokeStyle='rgba(255,255,255,.25)';g.lineWidth=2;const r=14;
   g.beginPath();g.moveTo(r,2);g.arcTo(254,2,254,62,r);g.arcTo(254,62,2,62,r);g.arcTo(2,62,2,2,r);g.arcTo(2,2,254,2,r);g.fill();g.stroke();
   g.fillStyle='#fff';g.font='600 25px Inter,Arial';g.textAlign='center';g.textBaseline='middle';g.fillText(text,128,34);
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));sp.position.set(x,y,z);sp.scale.set(w||4.6,(w||4.6)/4,1);labels.add(sp);}
-label('Loft studio',0,RIDGE+1.2,0,5.4);
-label('Queen bed',-4.5,loftF+2.6,-5.5,4);
-label('Kitchenette',6.5,loftF+3,-6,4.6);
-label('En-suite bath',5.5,loftF+3.2,4,4.8);
-label('Gym floor',-4,5,-1,4.2);
-label('Sauna',12,6.6,0,3);
-label('Cold plunge',13,6.2,6.4,4.6);
+label('Loft studio',0,RIDGE+1.2,0,5.2);
+label('Half-bath',6,loftF+3.2,4.4,4);
+label('Kitchenette',6.6,loftF+3,-5.5,4.6);
+label('Queen bed',-3.5,loftF+2.6,-5,4.2);
+label('Drive-through gym',-3,5,-1,5.8);
+label('Utility',11,6,-8.5,3);
+label('Sauna',12,6,-1,3);
+label('Cold plunge',13,6,5.5,4.4);
+label('Septic',-24,2.6,-2,3.2);
 
+// toggles
 let intro=1;
 (function loop(){requestAnimationFrame(loop);if(intro>0){intro*=0.96;if(intro<0.01)intro=0;}controls.update();renderer.render(scene,camera);})();
 function toggle(id,fn){const b=document.getElementById(id);b.addEventListener('click',()=>{const on=!b.classList.contains('on');b.classList.toggle('on',on);fn(on);});}
@@ -221,6 +268,7 @@ toggle('bRoof',v=>roof.visible=v);
 toggle('bWalls',v=>upper.visible=v);
 toggle('bInside',v=>interior.visible=v);
 toggle('bLabel',v=>labels.visible=v);
+toggle('bFrame',v=>{studs.visible=v;cladMats.forEach(m=>{m.transparent=v;m.opacity=v?0.16:1;m.needsUpdate=true;});});
 document.getElementById('bReset').addEventListener('click',()=>{camera.position.copy(startCam);controls.target.set(0,7,0);});
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 </script>

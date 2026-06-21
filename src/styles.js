@@ -178,6 +178,9 @@ export const S = {
   tabBar: { display: "flex", gap: 7, overflowX: "auto", paddingBottom: 6, marginBottom: 16 },
   tab: { flexShrink: 0, display: "flex", alignItems: "center", gap: 5, fontSize: 12.5, fontWeight: 600, padding: "8px 13px", borderRadius: 20, border: `1.5px solid ${LINE}`, background: "#fff", color: MUT, whiteSpace: "nowrap" },
   tabOn: { background: INK, color: "#fff", borderColor: INK },
+  phaseHead: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 11 },
+  phaseName: { fontSize: 14, fontWeight: 600, color: INK, letterSpacing: -0.2 },
+  phaseCount: { fontSize: 12, fontWeight: 500, color: MUT },
 
   checkBtn: { padding: 2, display: "flex", alignItems: "center", height: "fit-content", flexShrink: 0 },
   todoText: { fontSize: 15.5, fontWeight: 600, margin: 0, color: INK, lineHeight: 1.3, letterSpacing: -0.2 },
