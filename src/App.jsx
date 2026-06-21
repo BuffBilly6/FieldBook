@@ -7,6 +7,7 @@ import { useTable } from "./hooks/useTable";
 import AuthScreen from "./components/AuthScreen";
 import BottomNav from "./components/BottomNav";
 import ListPage from "./components/ListPage";
+import ProjectsPage from "./components/ProjectsPage";
 import FieldsPage from "./components/FieldsPage";
 import MarketsPage from "./components/MarketsPage";
 import NewsPage from "./components/NewsPage";
@@ -96,6 +97,8 @@ function MainApp() {
             <MarketsPage />
           ) : active === "fields" ? (
             <FieldsPage fields={fields} />
+          ) : active === "projects" ? (
+            <ProjectsPage table={projects} />
           ) : (
             <ListPage tab={tab} table={listTables[active]} />
           )}

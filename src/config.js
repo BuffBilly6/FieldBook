@@ -43,6 +43,16 @@ export const FORMS = {
   ],
 };
 
+/* Per-project assets shown on a project's 3D and Blueprint tabs.
+   Key = the project name exactly. Files live in /public.
+   To add visuals to a future project, drop the files in /public and add an entry. */
+export const PROJECT_ASSETS = {
+  "Two-Container Barn Gym": {
+    model: "/models/barn-gym-3d.html",
+    blueprint: "/blueprints/barn-gym.html",
+  },
+};
+
 export const STATUSES = ["todo", "in-progress", "done"];
 export const STATUS_META = {
   todo: { label: "To Do", color: "#9a8c78" },

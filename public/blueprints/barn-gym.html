@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barn Gym — Blueprint</title>
+<style>
+  html,body{margin:0;background:#0e3a63;color:#dbe9f7;}
+  body{font-family:'Courier New',monospace;padding:10px;}
+  .sheet{max-width:760px;margin:0 auto;background:#0e3a63;border:2px solid #bcd6ef;}
+  svg{width:100%;height:auto;display:block;}
+  text{fill:#dbe9f7;}
+  .ln{stroke:#bcd6ef;stroke-width:1.4;fill:none;}
+  .lnT{stroke:#7fb2dd;stroke-width:0.8;fill:none;}
+  .dim{stroke:#7fb2dd;stroke-width:0.8;}
+  .fill{fill:#12477a;stroke:#bcd6ef;stroke-width:1.4;}
+  .t{fill:#dbe9f7;font-size:12px;}
+  .ts{fill:#9fc4e6;font-size:10px;}
+  .th{fill:#ffffff;font-size:15px;}
+</style>
+</head>
+<body>
+<div class="sheet">
+<svg viewBox="0 0 760 960" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0H0V20" fill="none" stroke="#1c5a86" stroke-width="0.5" stroke-opacity="0.4"/>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="760" height="960" fill="#0e3a63"/>
+  <rect x="0" y="0" width="760" height="960" fill="url(#g)"/>
+  <rect x="10" y="10" width="740" height="940" class="ln"/>
+
+  <text x="30" y="42" class="th">TWO-CONTAINER BARN GYM</text>
+  <text x="30" y="60" class="ts">FLOOR PLAN — SCALE 1/2" = 1'-0" (approx) — ALL DIMS TO CONFIRM W/ ENGINEER</text>
+
+  <!-- FLOOR PLAN: 32ft x 20ft at 16px/ft, origin 120,90 -->
+  <!-- left container 120-248, gap 248-504 (16ft=256px), right 504-632 -->
+  <rect x="120" y="90" width="128" height="320" class="fill"/>
+  <rect x="248" y="90" width="256" height="320" class="lnT"/>
+  <rect x="504" y="90" width="128" height="320" class="fill"/>
+
+  <!-- left inner wall opening (cut) -->
+  <line x1="248" y1="90" x2="248" y2="150" class="ln"/>
+  <line x1="248" y1="350" x2="248" y2="410" class="ln"/>
+  <!-- right inner wall kept, door gap -->
+  <line x1="504" y1="90" x2="504" y2="330" class="ln"/>
+  <line x1="504" y1="370" x2="504" y2="410" class="ln"/>
+
+  <!-- wet room partitions -->
+  <line x1="504" y1="202" x2="632" y2="202" class="ln"/>
+  <line x1="504" y1="298" x2="632" y2="298" class="ln"/>
+
+  <!-- labels -->
+  <text x="376" y="250" text-anchor="middle" class="t">OPEN TRAINING FLOOR</text>
+  <text x="376" y="266" text-anchor="middle" class="ts">rig / rack / platform (center)</text>
+  <rect x="336" y="280" width="80" height="80" class="lnT"/>
+  <text x="376" y="324" text-anchor="middle" class="ts">PLATFORM</text>
+  <text x="184" y="250" text-anchor="middle" class="t">GYM</text>
+  <text x="184" y="266" text-anchor="middle" class="ts">storage</text>
+  <text x="568" y="150" text-anchor="middle" class="t">BATH</text>
+  <text x="568" y="255" text-anchor="middle" class="t">SAUNA</text>
+  <text x="568" y="360" text-anchor="middle" class="t">PLUNGE</text>
+
+  <!-- dimensions top -->
+  <line x1="120" y1="70" x2="248" y2="70" class="dim"/>
+  <line x1="248" y1="70" x2="504" y2="70" class="dim"/>
+  <line x1="504" y1="70" x2="632" y2="70" class="dim"/>
+  <text x="184" y="64" text-anchor="middle" class="ts">8'-0"</text>
+  <text x="376" y="64" text-anchor="middle" class="ts">16'-0" (clear span)</text>
+  <text x="568" y="64" text-anchor="middle" class="ts">8'-0"</text>
+  <!-- overall -->
+  <line x1="120" y1="426" x2="632" y2="426" class="dim"/>
+  <text x="376" y="440" text-anchor="middle" class="ts">32'-0" OVERALL</text>
+  <!-- depth -->
+  <line x1="100" y1="90" x2="100" y2="410" class="dim"/>
+  <text x="92" y="250" text-anchor="middle" class="ts" transform="rotate(-90 92 250)">20'-0" DEEP</text>
+
+  <!-- SECTION -->
+  <text x="30" y="500" class="th">SECTION A-A</text>
+  <text x="30" y="518" class="ts">LOOKING DOWN THE LENGTH</text>
+  <!-- ground -->
+  <line x1="120" y1="760" x2="640" y2="760" class="ln"/>
+  <!-- slab -->
+  <rect x="140" y="744" width="480" height="16" class="lnT"/>
+  <text x="380" y="756" text-anchor="middle" class="ts">CONTINUOUS SLAB (gap) + TOPPING (containers)</text>
+  <!-- containers -->
+  <rect x="150" y="610" width="120" height="134" class="fill"/>
+  <rect x="490" y="610" width="120" height="134" class="fill"/>
+  <text x="210" y="682" text-anchor="middle" class="ts">CONTAINER</text>
+  <text x="550" y="682" text-anchor="middle" class="ts">CONTAINER</text>
+  <!-- roof -->
+  <path class="ln" d="M250 610 L380 548 L510 610"/>
+  <path class="lnT" d="M250 610 L380 568 L510 610"/>
+  <text x="380" y="540" text-anchor="middle" class="ts">TRUSS — 16'-0" CLEAR SPAN, NO CENTER POSTS</text>
+  <!-- heights -->
+  <line x1="120" y1="610" x2="120" y2="744" class="dim"/>
+  <text x="112" y="680" text-anchor="middle" class="ts" transform="rotate(-90 112 680)">8'-6"</text>
+  <line x1="650" y1="548" x2="650" y2="744" class="dim"/>
+  <text x="658" y="650" text-anchor="middle" class="ts" transform="rotate(-90 658 650)">~12'-6" RIDGE</text>
+  <text x="380" y="640" text-anchor="middle" class="ts">OPEN VAULT</text>
+
+  <!-- TITLE BLOCK -->
+  <rect x="470" y="812" width="270" height="128" class="ln"/>
+  <line x1="470" y1="850" x2="740" y2="850" class="lnT"/>
+  <line x1="470" y1="888" x2="740" y2="888" class="lnT"/>
+  <line x1="605" y1="888" x2="605" y2="940" class="lnT"/>
+  <text x="482" y="836" class="t">TWO-CONTAINER BARN GYM</text>
+  <text x="482" y="872" class="ts">MIDDLE TENNESSEE · STD CONTAINERS</text>
+  <text x="482" y="908" class="ts">DRAWN: FIELDBOOK</text>
+  <text x="482" y="924" class="ts">NOT FOR CONSTRUCTION</text>
+  <text x="617" y="908" class="ts">SHEET</text>
+  <text x="617" y="926" class="t">A-1</text>
+
+  <text x="30" y="930" class="ts">Schematic only — slab, footings, truss connections &amp; wall cuts require a licensed engineer's stamp.</text>
+</svg>
+</div>
+</body>
+</html>

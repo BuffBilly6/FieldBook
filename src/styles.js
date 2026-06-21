@@ -162,4 +162,23 @@ export const S = {
   authOk: { background: "#f0f4e6", border: "1px solid #d5e3b8", color: "#4d7c0f", fontSize: 12.5, padding: "9px 12px", borderRadius: 10, marginBottom: 12, lineHeight: 1.4 },
   authSwitch: { textAlign: "center", marginTop: 16, fontSize: 13, color: "#9a8c78" },
   authLink: { color: GREEN, fontWeight: 700, padding: 4 },
+
+  /* projects: folder list + project detail */
+  folderCard: { width: "100%", background: "#fff", borderRadius: 16, padding: 15, display: "flex", gap: 12, alignItems: "center", border: `1px solid ${LINE}`, boxShadow: "0 1px 3px rgba(60,50,30,.07)" },
+  folderIcon: { width: 40, height: 40, borderRadius: 12, background: "#f0f4e6", color: GREEN, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  badge3d: { display: "flex", alignItems: "center", gap: 3, fontSize: 10, fontWeight: 700, color: GREEN, background: "#f0f4e6", padding: "3px 8px", borderRadius: 20, whiteSpace: "nowrap", flexShrink: 0 },
+
+  detailHead: { marginBottom: 14 },
+  backBtn: { display: "flex", alignItems: "center", gap: 2, color: "#9a8c78", fontSize: 13, fontWeight: 700, padding: "2px 0", marginBottom: 6 },
+  tabBar: { display: "flex", gap: 7, overflowX: "auto", paddingBottom: 6, marginBottom: 14 },
+  tab: { flexShrink: 0, display: "flex", alignItems: "center", gap: 5, fontSize: 12.5, fontWeight: 700, padding: "8px 13px", borderRadius: 20, border: `1.5px solid ${LINE}`, background: "#fff", color: "#6b6253", whiteSpace: "nowrap" },
+  tabOn: { background: "#1c1917", color: PAPER, borderColor: "#1c1917" },
+
+  checkBtn: { padding: 2, display: "flex", alignItems: "center", height: "fit-content", flexShrink: 0 },
+  todoText: { fontFamily: "'Fraunces', serif", fontSize: 15.5, fontWeight: 600, margin: 0, color: INK, lineHeight: 1.25 },
+  todoSub: { margin: "7px 0 0", fontSize: 12.5, color: "#9a8c78", lineHeight: 1.5 },
+
+  viewerWrap: { display: "flex", flexDirection: "column" },
+  viewer: { width: "100%", height: "62vh", minHeight: 380, border: `1px solid ${LINE}`, borderRadius: 16, background: "#0f1216" },
+  viewerNote: { fontSize: 11.5, color: "#b5aa98", fontStyle: "italic", margin: "8px 2px 0", lineHeight: 1.4 },
 };
