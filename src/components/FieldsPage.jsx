@@ -194,7 +194,7 @@ export default function FieldsPage({ fields }) {
         <div style={S.banner}><AlertTriangle size={13} /> Satellite imagery couldn't load — outlines &amp; acreage still work.</div>
       )}
       {drawing && (
-        <div style={{ ...S.banner, background: "#1c1917", color: "#facc15", border: "none" }}>
+        <div style={{ ...S.banner, background: "#0f172a", color: "#facc15", border: "none" }}>
           <Crosshair size={13} /> Tap the field corners — 3+ then Finish.
         </div>
       )}
@@ -284,7 +284,7 @@ export default function FieldsPage({ fields }) {
                         <span>{new Date(c.cut_date + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}</span>
                       </div>
                     ))}
-                    {fieldCuts.length > 3 && <div style={{ ...S.cutRow, color: "#b5aa98" }}>+{fieldCuts.length - 3} earlier cuts</div>}
+                    {fieldCuts.length > 3 && <div style={{ ...S.cutRow, color: "#94a3b8" }}>+{fieldCuts.length - 3} earlier cuts</div>}
                   </div>
                 )}
 
@@ -311,14 +311,14 @@ export default function FieldsPage({ fields }) {
             { k: "crop", label: "Crop / Use", ph: "Winter rye" },
             { k: "activity", label: "Current activity", ph: "Plant cover crop" }].map((fl) => (
             <label key={fl.k} style={S.field}>
-              <span style={S.lbl}>{fl.label}{fl.req && <span style={{ color: "#b91c1c" }}> *</span>}</span>
+              <span style={S.lbl}>{fl.label}{fl.req && <span style={{ color: "#dc2626" }}> *</span>}</span>
               <input style={S.input} placeholder={fl.ph} value={form[fl.k] || ""}
                 onChange={(e) => setForm({ ...form, [fl.k]: e.target.value })} />
             </label>
           ))}
           <label style={{ ...S.field, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
             <span style={S.lbl}>Hay field (track cutting cycle)</span>
-            <input type="checkbox" checked={!!form.is_hay} style={{ width: 22, height: 22, accentColor: "#4d7c0f" }}
+            <input type="checkbox" checked={!!form.is_hay} style={{ width: 22, height: 22, accentColor: "#16a34a" }}
               onChange={(e) => setForm({ ...form, is_hay: e.target.checked })} />
           </label>
           <label style={S.field}>

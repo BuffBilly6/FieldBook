@@ -45,7 +45,7 @@ export default function MarketsPage() {
       <div style={S.pageHead}>
         <h1 style={S.h1}>Markets</h1>
         <p style={S.sub}>
-          <span style={{ ...S.liveDot, background: live ? "#4d7c0f" : "#d6a93b" }} />
+          <span style={{ ...S.liveDot, background: live ? "#16a34a" : "#d6a93b" }} />
           {live ? "Live" : "Sample"}{updated && ` · ${updated.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
         </p>
       </div>
@@ -86,10 +86,13 @@ export default function MarketsPage() {
               );
             }
 
-            const chg = p.price - p.prev;
-            const pct = p.prev ? (chg / p.prev) * 100 : 0;
-            const up = chg > 0.0001, down = chg < -0.0001;
-            const col = up ? "#4d7c0f" : down ? "#b91c1c" : "#9a8c78";
+            /* Feed quotes commodities in cents; show accurate dollar amounts. */
+            const price = p.price / 100;
+            const prev = p.prev / 100;
+            const chg = price - prev;
+            const pct = prev ? (chg / prev) * 100 : 0;
+            const up = chg > 0.00005, down = chg < -0.00005;
+            const col = up ? "#16a34a" : down ? "#dc2626" : "#64748b";
             const Arrow = up ? TrendingUp : down ? TrendingDown : Minus;
             return (
               <div key={c.name} style={S.priceRow}>
@@ -99,10 +102,10 @@ export default function MarketsPage() {
                 </div>
                 <div style={{ textAlign: "right" }}>
                   <div style={S.priceVal}>
-                    {p.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    {price.toLocaleString(undefined, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
                   <div style={{ ...S.priceChg, color: col }}>
-                    <Arrow size={13} />{chg >= 0 ? "+" : ""}{chg.toFixed(2)} ({pct >= 0 ? "+" : ""}{pct.toFixed(2)}%)
+                    <Arrow size={13} />{chg >= 0 ? "+$" : "−$"}{Math.abs(chg).toFixed(2)} ({pct >= 0 ? "+" : ""}{pct.toFixed(2)}%)
                   </div>
                 </div>
               </div>

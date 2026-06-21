@@ -68,7 +68,7 @@ export default function ProjectDetail({ name, table, onBack }) {
     return (
       <div key={row.id} style={{ ...S.card, opacity: isDone ? 0.6 : 1 }}>
         <button onClick={() => toggleDone(row)} style={S.checkBtn} title={isDone ? "Mark not done" : "Mark done"}>
-          {isDone ? <CheckCircle2 size={22} color="#4d7c0f" /> : <Circle size={22} color="#c4b8a4" />}
+          {isDone ? <CheckCircle2 size={22} color="#16a34a" /> : <Circle size={22} color="#94a3b8" />}
         </button>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={S.cardTop}>
@@ -85,7 +85,7 @@ export default function ProjectDetail({ name, table, onBack }) {
           <div style={S.metaWrap}>
             {row.est_cost && <span style={S.meta}>{row.est_cost}</span>}
             {row.due && (
-              <span style={{ ...S.meta, color: od ? "#b91c1c" : "#6b6253", fontWeight: od ? 700 : 500 }}>
+              <span style={{ ...S.meta, color: od ? "#dc2626" : "#64748b", fontWeight: od ? 700 : 500 }}>
                 <Calendar size={12} />{od ? "Overdue " : "Due "}
                 {new Date(row.due + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" })}
               </span>
@@ -179,7 +179,7 @@ export default function ProjectDetail({ name, table, onBack }) {
           }
         >
           <label style={S.field}>
-            <span style={S.lbl}>{tab === "resources" ? "Item / equipment" : "To-do step"}<span style={{ color: "#b91c1c" }}> *</span></span>
+            <span style={S.lbl}>{tab === "resources" ? "Item / equipment" : "To-do step"}<span style={{ color: "#dc2626" }}> *</span></span>
             <input style={S.input} value={form.title || ""} placeholder={tab === "resources" ? "Power rack" : "Pour the slab"}
               onChange={(e) => setForm({ ...form, title: e.target.value })} />
           </label>

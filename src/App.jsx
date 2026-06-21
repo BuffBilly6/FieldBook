@@ -26,7 +26,7 @@ export default function App() {
       <style>{css}</style>
       {session === undefined ? (
         <div style={S.authStage}>
-          <div style={{ color: "#9a8c78" }}>Loading…</div>
+          <div style={{ color: "#64748b" }}>Loading…</div>
         </div>
       ) : !session ? (
         <AuthScreen />
@@ -79,10 +79,10 @@ function MainApp() {
               {menuOpen && (
                 <div style={S.menuPanel}>
                   <button style={S.menuItem} onClick={() => { setActive("news"); setMenuOpen(false); }}>
-                    <Newspaper size={16} color="#4d7c0f" /> Ag News
+                    <Newspaper size={16} color="#16a34a" /> Ag News
                   </button>
                   <button style={S.menuItem} onClick={() => supabase.auth.signOut()}>
-                    <LogOut size={16} color="#9a8c78" /> Sign out
+                    <LogOut size={16} color="#64748b" /> Sign out
                   </button>
                 </div>
               )}

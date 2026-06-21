@@ -57,7 +57,7 @@ export default function ListPage({ tab, table }) {
           const od = overdue(row);
           return (
             <div key={row.id} style={{ ...S.card, opacity: row.status === "done" ? 0.55 : 1 }}>
-              <div style={{ ...S.accentBar, background: od ? "#b91c1c" : "#4d7c0f" }} />
+              <div style={{ ...S.accentBar, background: od ? "#dc2626" : "#16a34a" }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={S.cardTop}>
                   <h3 style={{ ...S.cardTitle, textDecoration: row.status === "done" ? "line-through" : "none" }}>
@@ -76,7 +76,7 @@ export default function ListPage({ tab, table }) {
                   {row.hours && <span style={S.meta}>{row.hours}</span>}
                   {row.est_cost && <span style={S.meta}>{row.est_cost}</span>}
                   {row.due && (
-                    <span style={{ ...S.meta, color: od ? "#b91c1c" : "#6b6253", fontWeight: od ? 700 : 500 }}>
+                    <span style={{ ...S.meta, color: od ? "#dc2626" : "#64748b", fontWeight: od ? 700 : 500 }}>
                       <Calendar size={12} />{od ? "Overdue " : "Due "}
                       {new Date(row.due + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" })}
                     </span>
@@ -109,7 +109,7 @@ export default function ListPage({ tab, table }) {
         >
           {formFields.map((f) => (
             <label key={f.k} style={S.field}>
-              <span style={S.lbl}>{f.label}{f.required && <span style={{ color: "#b91c1c" }}> *</span>}</span>
+              <span style={S.lbl}>{f.label}{f.required && <span style={{ color: "#dc2626" }}> *</span>}</span>
               {f.type === "textarea" ? (
                 <textarea style={{ ...S.input, minHeight: 70, resize: "none" }} value={form[f.k] || ""} placeholder={f.ph}
                   onChange={(e) => setForm({ ...form, [f.k]: e.target.value })} />

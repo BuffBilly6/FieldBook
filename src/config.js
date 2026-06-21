@@ -55,9 +55,9 @@ export const PROJECT_ASSETS = {
 
 export const STATUSES = ["todo", "in-progress", "done"];
 export const STATUS_META = {
-  todo: { label: "To Do", color: "#9a8c78" },
+  todo: { label: "To Do", color: "#64748b" },
   "in-progress": { label: "Active", color: "#b45309" },
-  done: { label: "Done", color: "#4d7c0f" },
+  done: { label: "Done", color: "#16a34a" },
 };
 
 /* Hay cycle states and their map polygon colors. */
@@ -71,12 +71,12 @@ export const FIELD_COLOR = "#65a30d"; // non-hay fields
 
 /* Markets — commodity list shown on the Markets tab. */
 export const COMMODITIES = [
-  { name: "corn", label: "Corn", unit: "¢/bu", group: "Grains" },
-  { name: "soybean", label: "Soybeans", unit: "¢/bu", group: "Grains" },
-  { name: "wheat", label: "Wheat", unit: "¢/bu", group: "Grains" },
-  { name: "live_cattle", label: "Live Cattle", unit: "¢/lb", group: "Cattle & Hogs" },
-  { name: "feeder_cattle", label: "Feeder Cattle", unit: "¢/lb", group: "Cattle & Hogs" },
-  { name: "lean_hogs", label: "Lean Hogs", unit: "¢/lb", group: "Cattle & Hogs" },
+  { name: "corn", label: "Corn", unit: "$/bu", group: "Grains" },
+  { name: "soybean", label: "Soybeans", unit: "$/bu", group: "Grains" },
+  { name: "wheat", label: "Wheat", unit: "$/bu", group: "Grains" },
+  { name: "live_cattle", label: "Live Cattle", unit: "$/lb", group: "Cattle & Hogs" },
+  { name: "feeder_cattle", label: "Feeder Cattle", unit: "$/lb", group: "Cattle & Hogs" },
+  { name: "lean_hogs", label: "Lean Hogs", unit: "$/lb", group: "Cattle & Hogs" },
 ];
 
 /* Sample prices shown ONLY when the live feed is unavailable —

@@ -12,10 +12,10 @@ export default function BottomNav({ active, setActive, openCount }) {
         return (
           <button key={t.id} onClick={() => setActive(t.id)} style={S.tabBtn}>
             <div style={{ position: "relative" }}>
-              <Icon size={21} strokeWidth={on ? 2.6 : 2} color={on ? "#4d7c0f" : "#9a8c78"} />
+              <Icon size={21} strokeWidth={on ? 2.6 : 2} color={on ? "#16a34a" : "#64748b"} />
               {n > 0 && <span style={S.navDot}>{n}</span>}
             </div>
-            <span style={{ ...S.tabLbl, color: on ? "#3f3a32" : "#9a8c78", fontWeight: on ? 700 : 500 }}>
+            <span style={{ ...S.tabLbl, color: on ? "#0f172a" : "#64748b", fontWeight: on ? 700 : 500 }}>
               {t.short}
             </span>
           </button>

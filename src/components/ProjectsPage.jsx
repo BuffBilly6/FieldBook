@@ -72,7 +72,7 @@ export default function ProjectsPage({ table }) {
                 {f.resources > 0 && <span style={S.meta}>{f.resources} resources</span>}
               </div>
             </div>
-            <ChevronRight size={18} color="#c4b8a4" />
+            <ChevronRight size={18} color="#94a3b8" />
           </button>
         ))}
       </div>
@@ -93,7 +93,7 @@ export default function ProjectsPage({ table }) {
           }
         >
           <label style={S.field}>
-            <span style={S.lbl}>Project name<span style={{ color: "#b91c1c" }}> *</span></span>
+            <span style={S.lbl}>Project name<span style={{ color: "#dc2626" }}> *</span></span>
             <input style={S.input} value={form.name || ""} placeholder="New equipment barn"
               onChange={(e) => setForm({ ...form, name: e.target.value })} />
           </label>
