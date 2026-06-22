@@ -11,6 +11,7 @@ import ProjectsPage from "./components/ProjectsPage";
 import FieldsPage from "./components/FieldsPage";
 import MarketsPage from "./components/MarketsPage";
 import NewsPage from "./components/NewsPage";
+import WelcomeScreen from "./components/WelcomeScreen";
 
 export default function App() {
   const [session, setSession] = useState(undefined); // undefined = still checking
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <>
       <style>{css}</style>
+      <WelcomeScreen />
       {session === undefined ? (
         <div style={S.authStage}>
           <div style={{ color: "#64748b" }}>Loading…</div>
