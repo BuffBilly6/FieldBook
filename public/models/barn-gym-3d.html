@@ -145,6 +145,16 @@ const rail=std(0x2c2c2c,{metalness:0.4,roughness:0.5});
 shell.add(box(GAP,0.12,0.12,rail,0,LOFT+3,6));
 for(let x=-7.5;x<=7.5;x+=1.5) shell.add(box(0.1,3,0.1,rail,x,LOFT+1.5,6));
 
+// BALCONY on the left container roof (open deck at the 9ft loft level) + glass door from the studio
+shell.add(box(7,0.18,12,std(0x8a6b4a,{roughness:0.85}),-12,LOFT+0.12,2));
+shell.add(box(0.12,0.12,12,rail,-15.4,LOFT+3,2));
+shell.add(box(7,0.12,0.12,rail,-12,LOFT+3,8));
+shell.add(box(7,0.12,0.12,rail,-12,LOFT+3,-4));
+for(let z=-4;z<=8;z+=1.5) shell.add(box(0.08,3,0.08,rail,-15.4,LOFT+1.5,z));
+for(let x=-15.4;x<=-8.6;x+=1.5){shell.add(box(0.08,3,0.08,rail,x,LOFT+1.5,8));shell.add(box(0.08,3,0.08,rail,x,LOFT+1.5,-4));}
+shell.add(box(0.14,6.6,3,frameMat,-GAP/2,LOFT+3.3,0.5));
+shell.add(box(0.1,6,2.6,glass,-GAP/2-0.03,LOFT+3,0.5));
+
 // CENTER GABLE-END WALLS with GARAGE DOORS + gable windows
 function centerEnd(zsign){
   const z=zsign*C_LEN/2, zin=zsign*(C_LEN/2-0.1);
@@ -182,7 +192,7 @@ function roofPlane(sign){const ex=sign*(GAP/2+OH);
   return new THREE.Mesh(geo,roofMat);}
 roof.add(roofPlane(-1));roof.add(roofPlane(1));
 roof.add(box(0.4,0.35,C_LEN+1.4,std(0x5b636a,{metalness:0.6,roughness:0.4}),0,RIDGE+0.15,0));
-[-1,1].forEach(s=>{const m=box(C_W+0.8,0.2,C_LEN+0.8,std(0x6f7880,{metalness:0.5,roughness:0.45}),s*(GAP/2+C_W/2),TOP+0.35,0);m.rotation.z=s*0.07;roof.add(m);});
+[1].forEach(s=>{const m=box(C_W+0.8,0.2,C_LEN+0.8,std(0x6f7880,{metalness:0.5,roughness:0.45}),s*(GAP/2+C_W/2),TOP+0.35,0);m.rotation.z=s*0.07;roof.add(m);}); // right wing shed only — left roof is the balcony deck
 
 // L-STAIRCASE in the back-left gym corner (clear of garage doors)
 const stair=new THREE.Group();shell.add(stair);

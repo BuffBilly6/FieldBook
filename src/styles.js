@@ -11,6 +11,7 @@ export const PAPER = "#ffffff";   // surfaces
 export const BG = "#f4f5f7";      // app background
 export const LINE = "#e6e8ec";    // hairline borders
 export const DANGER = "#dc2626";
+export const MONO = "ui-monospace, SFMono-Regular, Menlo, 'Cascadia Code', monospace";
 
 export const css = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -30,6 +31,8 @@ export const css = `
   @keyframes fbfade { from { opacity:0; transform: translateY(6px);} to {opacity:1; transform:none;} }
   .fb-sheet { animation: fbsheet .28s cubic-bezier(.2,.8,.2,1); }
   @keyframes fbsheet { from { transform: translateY(100%);} to { transform: none;} }
+  @keyframes fbsheen { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+  @keyframes fbscan { 0%{transform:translateY(-100%)} 100%{transform:translateY(60px)} }
 `;
 
 const CARD_SHADOW = "0 1px 2px rgba(16,24,40,.05)";
@@ -49,7 +52,9 @@ export const S = {
     width: "100%",
     maxWidth: 460,
     minHeight: "100dvh",
-    background: PAPER,
+    background: "#ffffff",
+    backgroundImage: "radial-gradient(rgba(22,163,74,.045) 1px, transparent 1.5px), linear-gradient(180deg,#ffffff 0%,#f6f9ff 100%)",
+    backgroundSize: "22px 22px, 100% 100%",
     overflow: "hidden",
     position: "relative",
     display: "flex",
@@ -58,7 +63,8 @@ export const S = {
   },
 
   header: {
-    background: PAPER,
+    background: "rgba(255,255,255,.82)",
+    backdropFilter: "blur(12px)",
     color: INK,
     padding: "max(14px, env(safe-area-inset-top)) 18px 14px",
     flexShrink: 0,
@@ -66,9 +72,12 @@ export const S = {
     justifyContent: "space-between",
     alignItems: "center",
     borderBottom: `1px solid ${LINE}`,
+    boxShadow: "0 1px 0 rgba(22,163,74,.12)",
+    position: "relative",
+    zIndex: 5,
   },
   headRow: { display: "flex", alignItems: "center", gap: 11 },
-  logo: { width: 34, height: 34, borderRadius: 10, background: GREEN, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", boxShadow: "0 2px 6px rgba(22,163,74,.35)" },
+  logo: { width: 34, height: 34, borderRadius: 10, background: "linear-gradient(120deg,#16a34a,#22d3ee,#16a34a)", backgroundSize: "200% 100%", animation: "fbsheen 6s linear infinite", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", boxShadow: "0 2px 12px rgba(22,163,74,.5)" },
   brand: { fontWeight: 800, letterSpacing: 0.4, fontSize: 15, color: INK },
   brandSub: { fontSize: 12, color: MUT, fontWeight: 500, marginTop: 1 },
   headBtn: { color: MUT, padding: 6, display: "flex", alignItems: "center", borderRadius: 8 },
@@ -84,18 +93,18 @@ export const S = {
   },
   tabBtn: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, paddingTop: 9 },
   tabLbl: { fontSize: 9.5, letterSpacing: 0.1, fontWeight: 600 },
-  navDot: { position: "absolute", top: -5, right: -9, background: DANGER, color: "#fff", fontSize: 9, fontWeight: 700, minWidth: 15, height: 15, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 4px" },
+  navDot: { position: "absolute", top: -5, right: -9, background: DANGER, color: "#fff", fontSize: 9, fontWeight: 700, minWidth: 15, height: 15, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 4px", fontFamily: MONO, boxShadow: "0 0 8px rgba(220,38,38,.5)" },
 
   pageHead: { marginBottom: 18 },
   h1: { fontSize: 27, fontWeight: 700, margin: 0, color: INK, letterSpacing: -0.6 },
-  sub: { margin: "4px 0 0", fontSize: 13, color: MUT, display: "flex", alignItems: "center", gap: 6 },
+  sub: { margin: "4px 0 0", fontSize: 12.5, color: MUT, display: "flex", alignItems: "center", gap: 6, fontFamily: MONO, letterSpacing: -0.2 },
   liveDot: { width: 7, height: 7, borderRadius: 4, display: "inline-block" },
 
   empty: { textAlign: "center", color: MUT, padding: "54px 20px", display: "flex", flexDirection: "column", alignItems: "center" },
   emptyHint: { fontSize: 13, margin: "4px 0 0", color: FAINT },
 
   cardList: { display: "flex", flexDirection: "column", gap: 11 },
-  card: { background: PAPER, borderRadius: 14, padding: "15px 15px 15px 17px", display: "flex", gap: 11, position: "relative", boxShadow: CARD_SHADOW, border: `1px solid ${LINE}`, overflow: "hidden" },
+  card: { background: "rgba(255,255,255,.74)", backdropFilter: "blur(10px)", borderRadius: 14, padding: "15px 15px 15px 17px", display: "flex", gap: 11, position: "relative", boxShadow: CARD_SHADOW, border: `1px solid ${LINE}`, overflow: "hidden" },
   cardSel: { borderColor: GREEN, boxShadow: `0 0 0 1.5px ${GREEN}` },
   accentBar: { position: "absolute", left: 0, top: 0, bottom: 0, width: 3.5 },
   cardTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 },
@@ -169,9 +178,9 @@ export const S = {
   authLink: { color: GREEN_D, fontWeight: 600, padding: 4 },
 
   /* projects: folder list + project detail */
-  folderCard: { width: "100%", background: PAPER, borderRadius: 14, padding: 15, display: "flex", gap: 12, alignItems: "center", border: `1px solid ${LINE}`, boxShadow: CARD_SHADOW },
+  folderCard: { width: "100%", background: "rgba(255,255,255,.74)", backdropFilter: "blur(10px)", borderRadius: 14, padding: 15, display: "flex", gap: 12, alignItems: "center", border: `1px solid ${LINE}`, boxShadow: CARD_SHADOW },
   folderIcon: { width: 40, height: 40, borderRadius: 11, background: "#eafaf0", color: GREEN_D, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
-  badge3d: { display: "flex", alignItems: "center", gap: 3, fontSize: 10, fontWeight: 600, color: GREEN_D, background: "#eafaf0", padding: "3px 8px", borderRadius: 20, whiteSpace: "nowrap", flexShrink: 0 },
+  badge3d: { display: "flex", alignItems: "center", gap: 3, fontSize: 10, fontWeight: 600, color: GREEN_D, background: "#eafaf0", padding: "3px 8px", borderRadius: 20, whiteSpace: "nowrap", flexShrink: 0, fontFamily: MONO, letterSpacing: 0.5, boxShadow: "0 0 0 1px rgba(22,163,74,.15)" },
 
   detailHead: { marginBottom: 16 },
   backBtn: { display: "flex", alignItems: "center", gap: 2, color: MUT, fontSize: 13, fontWeight: 600, padding: "2px 0", marginBottom: 8 },
@@ -180,7 +189,7 @@ export const S = {
   tabOn: { background: INK, color: "#fff", borderColor: INK },
   phaseHead: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 11 },
   phaseName: { fontSize: 14, fontWeight: 600, color: INK, letterSpacing: -0.2 },
-  phaseCount: { fontSize: 12, fontWeight: 500, color: MUT },
+  phaseCount: { fontSize: 12, fontWeight: 500, color: MUT, fontFamily: MONO },
 
   checkBtn: { padding: 2, display: "flex", alignItems: "center", height: "fit-content", flexShrink: 0 },
   todoText: { fontSize: 15.5, fontWeight: 600, margin: 0, color: INK, lineHeight: 1.3, letterSpacing: -0.2 },
