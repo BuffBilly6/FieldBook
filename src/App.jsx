@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tractor, AlertTriangle, LogOut, Menu, Newspaper } from "lucide-react";
 import { supabase } from "./lib/supabase";
 import { TABS } from "./config";
-import { S, css } from "./styles";
+import { S, css, PAGE_BG } from "./styles";
 import { useTable } from "./hooks/useTable";
 import AuthScreen from "./components/AuthScreen";
 import BottomNav from "./components/BottomNav";
@@ -90,7 +90,7 @@ function MainApp() {
           </div>
         </header>
 
-        <div style={S.scroll} key={active} className="fb-fade" onClick={() => menuOpen && setMenuOpen(false)}>
+        <div style={{ ...S.scroll, ...(PAGE_BG[active] || {}) }} key={active} className="fb-fade" onClick={() => menuOpen && setMenuOpen(false)}>
           {active === "news" ? (
             <NewsPage />
           ) : active === "markets" ? (

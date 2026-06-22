@@ -33,6 +33,10 @@ export const css = `
   @keyframes fbsheet { from { transform: translateY(100%);} to { transform: none;} }
   @keyframes fbsheen { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
   @keyframes fbscan { 0%{transform:translateY(-100%)} 100%{transform:translateY(60px)} }
+  @keyframes fbaurora { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @keyframes fbfloat { 0%,100%{transform:translate(0,0)} 50%{transform:translate(18px,-22px)} }
+  @keyframes fbfloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-22px,16px)} }
+  @keyframes fbslide { from{background-position:0 0} to{background-position:40px 40px} }
 `;
 
 const CARD_SHADOW = "0 1px 2px rgba(16,24,40,.05)";
@@ -198,4 +202,38 @@ export const S = {
   viewerWrap: { display: "flex", flexDirection: "column" },
   viewer: { width: "100%", height: "62vh", minHeight: 380, border: `1px solid ${LINE}`, borderRadius: 16, background: "#0f1216" },
   viewerNote: { fontSize: 11.5, color: FAINT, margin: "8px 2px 0", lineHeight: 1.4 },
+};
+
+/* Distinct, on-theme backdrop per tab — merged into the scroll area. Subtle so
+   the glass cards still read. Markets paints its own dark terminal. */
+export const PAGE_BG = {
+  vehicles: {
+    background: "linear-gradient(180deg,#f7f9fc,#eef2f7)",
+    backgroundImage: "linear-gradient(rgba(100,116,139,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(100,116,139,.06) 1px,transparent 1px)",
+    backgroundSize: "26px 26px",
+  },
+  fencing: {
+    background: "linear-gradient(180deg,#f6faf8,#eef4f1)",
+    backgroundImage: "repeating-linear-gradient(45deg, rgba(22,163,74,.06) 0 1px, transparent 1px 15px)",
+  },
+  fields: {
+    background: "linear-gradient(180deg,#f5faef,#e9f4dd)",
+    backgroundImage: "repeating-linear-gradient(0deg, rgba(101,163,13,.08) 0 1px, transparent 1px 18px)",
+  },
+  livestock: {
+    background: "linear-gradient(180deg,#faf7f3,#f2ece3)",
+    backgroundImage: "radial-gradient(rgba(180,83,9,.07) 1.5px, transparent 1.7px)",
+    backgroundSize: "20px 20px",
+  },
+  projects: {
+    background: "linear-gradient(180deg,#f4f9ff,#e7f0fb)",
+    backgroundImage: "linear-gradient(rgba(34,211,238,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.08) 1px,transparent 1px)",
+    backgroundSize: "30px 30px",
+    animation: "fbslide 45s linear infinite",
+  },
+  news: {
+    background: "linear-gradient(180deg,#faf9f6,#f1efe9)",
+    backgroundImage: "repeating-linear-gradient(90deg, rgba(15,23,42,.04) 0 1px, transparent 1px 130px)",
+  },
+  markets: { background: "#0b1320" },
 };
